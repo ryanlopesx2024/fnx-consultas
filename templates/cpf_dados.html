@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="fnx-page-header">
+  <div class="fnx-breadcrumb"><a href="/">Início</a> &nbsp;/&nbsp; <a href="/cpf/">CPF</a> &nbsp;/&nbsp; Dados Completos</div>
+  <h1 class="fnx-page-title">CPF — Dados Completos</h1>
+  <p class="fnx-page-subtitle">Telefones, endereços, e-mails e salário estimado</p>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="fnx-form-card">
+      <div class="fnx-form-header">
+        <i class="bi bi-person-lines-fill" style="color:#999;"></i>
+        <span class="fnx-form-header-title">Consultar CPF</span>
+        <span class="fnx-form-header-badge">FNX · Cadastro PF</span>
+      </div>
+      <div class="fnx-form-body">
+        <form method="post">
+          <div class="mb-4">
+            <label class="fnx-label">Número do CPF</label>
+            <input type="text" name="cpf" class="fnx-input form-control"
+                   placeholder="000.000.000-00" value="{{ cpf or '' }}" required />
+          </div>
+          <button type="submit" class="btn-fnx-outline">Executar Consulta</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+
+    {% if erro %}
+    <div class="fnx-alert"><i class="bi bi-x-circle me-2"></i>{{ erro }}</div>
+    {% endif %}
+
+    {% if resultado %}
+
+    <div class="fnx-result-card mb-3">
+      <div class="fnx-result-header">
+        <i class="bi bi-person" style="color:#999;"></i>
+        <span class="fnx-result-header-title">Dados Pessoais</span>
+      </div>
+      <div class="fnx-result-body">
+        <table class="fnx-table">
+          <tbody>
+            <tr><th>Nome Completo</th><td>{{ resultado.nomeCompleto }}</td></tr>
+            <tr><th>CPF</th><td>{{ resultado.documento }}</td></tr>
+            <tr><th>Gênero</th><td>{{ resultado.genero }}</td></tr>
+            <tr><th>Nascimento</th><td>{{ resultado.dataDeNascimento }}</td></tr>
+            <tr><th>Idade</th><td>{{ resultado.anos }} anos</td></tr>
+            <tr><th>Nome da Mãe</th><td>{{ resultado.nomeDaMae }}</td></tr>
+            <tr><th>Salário Estimado</th><td>R$ {{ resultado.salarioEstimado }}</td></tr>
+            <tr><th>Última Atualização</th><td>{{ resultado.lastUpdate }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    {% if resultado.listaTelefones %}
+    <div class="fnx-result-card mb-3">
+      <div class="fnx-result-header">
+        <i class="bi bi-telephone" style="color:#999;"></i>
+        <span class="fnx-result-header-title">Telefones</span>
+        <span class="ms-auto" style="font-size:0.65rem;letter-spacing:1px;color:#555;">
+          {{ resultado.listaTelefones|length }} registro(s)
+        </span>
+      </div>
+      <div class="fnx-result-body">
+        {% for tel in resultado.listaTelefones %}
+        <div class="fnx-list-item">
+          <div style="font-size:1rem;font-weight:500;">{{ tel.telefoneComDDD }}</div>
+          <div style="font-size:0.7rem;color:#666;margin-top:2px;">
+            {% if tel.operadora %}{{ tel.operadora }}{% endif %}
+            {% if tel.tipoTelefone %} &nbsp;·&nbsp; {{ tel.tipoTelefone }}{% endif %}
+            {% if tel.whatsApp %} &nbsp;·&nbsp; WhatsApp{% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if resultado.listaEnderecos %}
+    <div class="fnx-result-card mb-3">
+      <div class="fnx-result-header">
+        <i class="bi bi-geo-alt" style="color:#999;"></i>
+        <span class="fnx-result-header-title">Endereços</span>
+        <span class="ms-auto" style="font-size:0.65rem;letter-spacing:1px;color:#555;">
+          {{ resultado.listaEnderecos|length }} registro(s)
+        </span>
+      </div>
+      <div class="fnx-result-body">
+        {% for end in resultado.listaEnderecos %}
+        <div class="fnx-list-item">
+          <div class="fnx-list-item-label">Endereço {{ loop.index }}</div>
+          <div style="font-size:0.9rem;font-weight:500;">
+            {{ end.logradouro }}, {{ end.numero }}
+            {% if end.complemento %} — {{ end.complemento }}{% endif %}
+          </div>
+          <div style="font-size:0.8rem;color:#666;margin-top:2px;">
+            {{ end.bairro }} &nbsp;·&nbsp; {{ end.cidade }}/{{ end.uf }} &nbsp;·&nbsp; CEP {{ end.cep }}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if resultado.listaEmails %}
+    <div class="fnx-result-card">
+      <div class="fnx-result-header">
+        <i class="bi bi-envelope" style="color:#999;"></i>
+        <span class="fnx-result-header-title">E-mails</span>
+        <span class="ms-auto" style="font-size:0.65rem;letter-spacing:1px;color:#555;">
+          {{ resultado.listaEmails|length }} registro(s)
+        </span>
+      </div>
+      <div class="fnx-result-body">
+        {% for email in resultado.listaEmails %}
+        <div class="fnx-list-item">
+          <span style="font-size:0.9rem;">{{ email.enderecoEmail }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% endif %}
+
+    {% if not resultado and not erro %}
+    <div style="border:1px dashed #222;padding:3rem;text-align:center;color:#444;">
+      <i class="bi bi-person-lines-fill" style="font-size:2rem;display:block;margin-bottom:1rem;"></i>
+      <span style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;">Aguardando consulta</span>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

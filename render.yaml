@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: fnx-consultas
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: HUB_TOKEN
+        sync: false
+      - key: HUB_BASE_URL
+        value: https://ws.hubdodesenvolvedor.com.br/v2
+      - key: CPFCNPJ_TOKEN
+        sync: false
+      - key: CPFCNPJ_BASE_URL
+        value: https://api.cpfcnpj.com.br

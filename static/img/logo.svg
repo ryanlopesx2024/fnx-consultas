@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 72" fill="none">
+  <!-- F -->
+  <rect x="0" y="0" width="17" height="72" fill="white"/>
+  <rect x="0" y="0" width="52" height="17" fill="white"/>
+  <rect x="0" y="28" width="42" height="14" fill="white"/>
+
+  <!-- N -->
+  <rect x="64" y="0" width="17" height="72" fill="white"/>
+  <rect x="120" y="0" width="17" height="72" fill="white"/>
+  <!-- N diagonal upper stripe -->
+  <polygon points="91,-5 71,5 87,33 107,23" fill="white"/>
+  <!-- N diagonal lower stripe -->
+  <polygon points="115,39 95,49 111,77 131,67" fill="white"/>
+
+  <!-- X -->
+  <!-- top-left → bottom-right bar -->
+  <polygon points="156,-8 140,8 213,80 229,64" fill="white"/>
+  <!-- top-right → bottom-left bar -->
+  <polygon points="229,8 213,-8 140,80 156,64" fill="white"/>
+
+  <!-- CORPORATION -->
+  <text x="244" y="50"
+    font-family="'Inter', system-ui, -apple-system, sans-serif"
+    font-weight="300"
+    font-size="12.5"
+    fill="#888888"
+    letter-spacing="5">CORPORATION</text>
+</svg>

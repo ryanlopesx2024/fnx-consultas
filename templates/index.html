@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Hero -->
+<div class="fnx-hero">
+  <img src="/static/img/logo.svg" alt="FNX Corporation"
+       style="height:clamp(52px,8vw,90px);width:auto;display:block;margin:0 auto 2rem;" />
+  <div class="fnx-hero-divider"></div>
+  <p class="fnx-hero-desc">Plataforma de Consultas &nbsp;·&nbsp; Dados &amp; Documentos</p>
+</div>
+
+<!-- Módulos -->
+<div class="row g-0">
+
+  <div class="col-md-3">
+    <div class="fnx-module h-100 p-4">
+      <i class="bi bi-fingerprint fnx-module-icon"></i>
+      <div class="fnx-module-title">CPF</div>
+      <p class="fnx-module-desc">Nome, nascimento, mãe, gênero, situação cadastral e endereços.</p>
+      <a href="/cpf/" class="btn-fnx">Consultar</a>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="fnx-module h-100 p-4" style="border-left:none;">
+      <i class="bi bi-building fnx-module-icon"></i>
+      <div class="fnx-module-title">CNPJ</div>
+      <p class="fnx-module-desc">Empresa, sócios, CNAE, situação fiscal e regime tributário.</p>
+      <a href="/cnpj/" class="btn-fnx">Consultar</a>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="fnx-module h-100 p-4" style="border-left:none;">
+      <i class="bi bi-geo-alt fnx-module-icon"></i>
+      <div class="fnx-module-title">CEP</div>
+      <p class="fnx-module-desc">Busca de endereço completo pelo CEP via Correios.</p>
+      <a href="/cep/" class="btn-fnx">Consultar</a>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="fnx-module h-100 p-4" style="border-left:none;">
+      <i class="bi bi-graph-up fnx-module-icon"></i>
+      <div class="fnx-module-title">Score</div>
+      <p class="fnx-module-desc">Score, Pefin/Refin, Protestos, CCF, Ações Cíveis e Alertas.</p>
+      <a href="/score/" class="btn-fnx">Consultar</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- Stats bar -->
+<div class="row g-0 mt-4" style="border:1px solid #222;">
+  <div class="col-4 p-3 text-center" style="border-right:1px solid #222;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:3px;">4</div>
+    <div style="font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:#666;">Módulos Ativos</div>
+  </div>
+  <div class="col-4 p-3 text-center" style="border-right:1px solid #222;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:3px;">FNX</div>
+    <div style="font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:#666;">Plataforma Própria</div>
+  </div>
+  <div class="col-4 p-3 text-center">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:3px;color:#fff;">LIVE</div>
+    <div style="font-size:0.6rem;letter-spacing:2px;text-transform:uppercase;color:#666;">Status da API</div>
+  </div>
+</div>
+
+{% endblock %}

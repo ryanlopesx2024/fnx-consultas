@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FNX Consultas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="/static/css/style.css" rel="stylesheet" />
+</head>
+<body>
+
+<nav class="fnx-nav navbar navbar-expand-lg">
+  <div class="container">
+    <a href="/" style="display:inline-block;line-height:0;text-decoration:none;">
+      <img src="/static/img/logo.svg" alt="FNX Corporation" style="height:32px;width:auto;display:block;" />
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+            style="filter: invert(1);">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
+        <li class="nav-item">
+          <a class="nav-link {% if request.url.path == '/' %}active{% endif %}" href="/">
+            Início
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle {% if '/cpf' in request.url.path %}active{% endif %}"
+             href="#" data-bs-toggle="dropdown">
+            CPF
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/cpf/">
+              <i class="bi bi-fingerprint me-2"></i>Receita Federal
+            </a></li>
+            <li><hr class="dropdown-divider" style="border-color:#333;margin:0.3rem 0;"></li>
+            <li><a class="dropdown-item" href="/cpf/basico">
+              <i class="bi bi-search me-2"></i>Situação Cadastral
+            </a></li>
+            <li><a class="dropdown-item" href="/cpf/dados">
+              <i class="bi bi-person-lines-fill me-2"></i>Dados Completos
+            </a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if '/cnpj' in request.url.path %}active{% endif %}" href="/cnpj/">
+            CNPJ
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if '/cep' in request.url.path %}active{% endif %}" href="/cep/">
+            CEP
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if '/score' in request.url.path %}active{% endif %}" href="/score/">
+            Score
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-4 flex-grow-1">
+  {% block content %}{% endblock %}
+</div>
+
+<footer class="fnx-footer">
+  <div class="container d-flex justify-content-between align-items-center">
+    <img src="/static/img/logo.svg" alt="FNX" style="height:18px;width:auto;opacity:0.4;" />
+    <span class="fnx-footer-text">Plataforma de Consultas &copy; 2025</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

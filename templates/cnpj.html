@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="fnx-page-header">
+  <div class="fnx-breadcrumb"><a href="/">Início</a> &nbsp;/&nbsp; CNPJ</div>
+  <h1 class="fnx-page-title">CNPJ</h1>
+  <p class="fnx-page-subtitle">Consulta completa — empresa, sócios, CNAE e situação fiscal</p>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="fnx-form-card">
+      <div class="fnx-form-header">
+        <i class="bi bi-building" style="color:#999;"></i>
+        <span class="fnx-form-header-title">Consultar CNPJ</span>
+        <span class="fnx-form-header-badge">Receita Federal</span>
+      </div>
+      <div class="fnx-form-body">
+        <form method="post">
+          <div class="mb-4">
+            <label class="fnx-label">Número do CNPJ</label>
+            <input type="text" name="cnpj" class="fnx-input form-control"
+                   placeholder="00.000.000/0000-00" value="{{ cnpj or '' }}" required />
+          </div>
+          <button type="submit" class="btn-fnx-outline">Executar Consulta</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+
+    {% if erro %}
+    <div class="fnx-alert"><i class="bi bi-x-circle me-2"></i>{{ erro }}</div>
+    {% endif %}
+
+    {% if empresa %}
+
+    <!-- Dados da Empresa -->
+    <div class="fnx-result-card">
+      <div class="fnx-result-header">
+        <i class="bi bi-building" style="color:#999;"></i>
+        <span class="fnx-result-header-title">Dados da Empresa</span>
+        <span class="ms-auto">
+          {% if empresa.situacao %}
+          <span class="fnx-badge {% if empresa.situacao.nome == 'Ativa' %}fnx-badge-ok{% else %}fnx-badge-err{% endif %}">
+            {{ empresa.situacao.nome }}
+          </span>
+          {% endif %}
+        </span>
+      </div>
+      <div class="fnx-result-body">
+        <table class="fnx-table">
+          <tbody>
+            <tr><th>Razão Social</th><td>{{ empresa.razao }}</td></tr>
+            <tr><th>Nome Fantasia</th><td>{{ empresa.fantasia or '—' }}</td></tr>
+            <tr><th>CNPJ</th><td style="font-family:monospace;">{{ empresa.cnpj }}</td></tr>
+            <tr><th>Tipo</th><td>{{ empresa.tipo }}</td></tr>
+            {% if empresa.porte %}<tr><th>Porte</th><td>{{ empresa.porte.descricao }}</td></tr>{% endif %}
+            {% if empresa.naturezaJuridica %}<tr><th>Natureza Jurídica</th><td>{{ empresa.naturezaJuridica.descricao }}</td></tr>{% endif %}
+            {% if empresa.capitalSocial %}<tr><th>Capital Social</th><td>R$ {{ "{:,.2f}".format(empresa.capitalSocial) }}</td></tr>{% endif %}
+            {% if empresa.inicioAtividade %}<tr><th>Início de Atividade</th><td>{{ empresa.inicioAtividade }}</td></tr>{% endif %}
+            {% if empresa.email %}<tr><th>E-mail</th><td>{{ empresa.email }}</td></tr>{% endif %}
+            {% if empresa.responsavel %}<tr><th>Responsável</th><td>{{ empresa.responsavel }}</td></tr>{% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Situação -->
+    {% if empresa.situacao %}
+    <div class="fnx-result-card">
+      <div class="fnx-result-header">
+        <i class="bi bi-shield-check" style="color:#999;"></i>
+        <span class="fnx-result-header-title">Situação Cadastral</span>
+      </div>
+      <div class="fnx-result-body">
+        <table class="fnx-table">
+          <tbody>
+            <tr><th>Situação</th>
+                <td>
+                  <span class="fnx-badge {% if empresa.situacao.nome == 'Ativa' %}fnx-badge-ok{% else %}fnx-badge-err{% endif %}">
+                    {{ empresa.situacao.nome }}
+                  </span>
+                </td>
+            </tr>
+            {% if empresa.situacao.data %}<tr><th>Data</th><td>{{ empresa.situacao.data }}</td></tr>{% endif %}
+            {% if empresa.situacao.motivo %}<tr><th>Motivo</th><td>{{ empresa.situacao.motivo.descricao }}</td></tr>{% endif %}
+            {% if empresa.simplesNacional %}
+            <tr><th>Simples Nacional</th><td>{{ empresa.simplesNacional.optante }}</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Endereço -->
+    {% if empresa.matrizEndereco %}
+    <div class="fnx-result-card">
+      <div class="fnx-result-header">
+        <i class="bi bi-geo-alt" style="color:#999;"></i>
+        <span class="fnx-result-header-title">Endereço</span>
+      </div>
+      <div class="fnx-result-body">
+        <div class="fnx-list-item">
+          <div style="font-size:0.9rem;font-weight:500;">
+            {{ empresa.matrizEndereco.tipo }} {{ empresa.matrizEndereco.logradouro }}, {{ empresa.matrizEndereco.numero }}
+            {% if empresa.matrizEndereco.complemento %} — {{ empresa.matrizEndereco.complemento }}{% endif %}
+          </div>
+          <div style="font-size:0.8rem;color:#666;margin-top:4px;">
+            {{ empresa.matrizEndereco.bairro }} &nbsp;·&nbsp;
+            {{ empresa.matrizEndereco.cidade }}/{{ empresa.matrizEndereco.uf }} &nbsp;·&nbsp;
+            CEP {{ empresa.matrizEndereco.cep }}
+          </div>
+          {% if empresa.telefones %}
+          <div style="font-size:0.8rem;color:#888;margin-top:4px;">
+            {% for tel in empresa.telefones %}
+            <i class="bi bi-telephone"></i> ({{ tel.ddd }}) {{ tel.numero }}
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- CNAE -->
+    {% if empresa.cnae %}
+    <div class="fnx-result-card">
+      <div class="fnx-result-header">
+        <i class="bi bi-grid" style="color:#999;"></i>
+        <span class="fnx-result-header-title">CNAE</span>
+      </div>
+      <div class="fnx-result-body">
+        <div class="fnx-list-item">
+          <div class="fnx-list-item-label">Atividade Principal</div>
+          <div style="font-size:0.85rem;font-weight:500;">{{ empresa.cnae.descricao }}</div>
+          <div style="font-size:0.75rem;color:#666;margin-top:2px;">Código {{ empresa.cnae.fiscal }} · {{ empresa.cnae.subClasse }}</div>
+        </div>
+        {% if empresa.cnae.secundarias %}
+        {% for sec in empresa.cnae.secundarias %}
+        <div class="fnx-list-item">
+          <div class="fnx-list-item-label">Atividade Secundária {{ loop.index }}</div>
+          <div style="font-size:0.85rem;">{{ sec.descricao }}</div>
+          <div style="font-size:0.75rem;color:#666;margin-top:2px;">Código {{ sec.id }}</div>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Sócios -->
+    {% if empresa.socios %}
+    <div class="fnx-result-card">
+      <div class="fnx-result-header">
+        <i class="bi bi-people" style="color:#999;"></i>
+        <span class="fnx-result-header-title">Quadro Societário</span>
+        <span class="ms-auto" style="font-size:0.65rem;letter-spacing:1px;color:#555;">
+          {{ empresa.socios|length }} sócio(s)
+        </span>
+      </div>
+      <div class="fnx-result-body">
+        {% for socio in empresa.socios %}
+        <div class="fnx-list-item">
+          <div style="font-size:0.95rem;font-weight:600;">{{ socio.nome }}</div>
+          <div style="font-size:0.75rem;color:#888;margin-top:3px;">
+            {{ socio.qualificacao_socio.descricao if socio.qualificacao_socio else '—' }}
+            &nbsp;·&nbsp; {{ socio.tipo }}
+            {% if socio.faixa_etaria %} &nbsp;·&nbsp; {{ socio.faixa_etaria }}{% endif %}
+            {% if socio.data_entrada %} &nbsp;·&nbsp; Entrada: {{ socio.data_entrada }}{% endif %}
+          </div>
+          {% if socio.cpf_cnpj_socio %}
+          <div style="font-size:0.75rem;color:#666;margin-top:2px;font-family:monospace;">
+            {{ socio.cpf_cnpj_socio }}
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Regime Tributário -->
+    {% if empresa.regimesTributarios %}
+    <div class="fnx-result-card">
+      <div class="fnx-result-header">
+        <i class="bi bi-receipt" style="color:#999;"></i>
+        <span class="fnx-result-header-title">Regime Tributário</span>
+      </div>
+      <div class="fnx-result-body">
+        <table class="fnx-table">
+          <thead>
+            <tr>
+              <th>Ano</th>
+              <th>Regime</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for rt in empresa.regimesTributarios %}
+            <tr>
+              <td>{{ rt.ano }}</td>
+              <td>{{ rt.regime_tributario }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+    {% endif %}
+
+    {% if not empresa and not erro %}
+    <div style="border:1px dashed #222;padding:3rem;text-align:center;color:#444;">
+      <i class="bi bi-building" style="font-size:2rem;display:block;margin-bottom:1rem;"></i>
+      <span style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;">Aguardando consulta</span>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

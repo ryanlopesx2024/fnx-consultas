@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="fnx-page-header">
+  <div class="fnx-breadcrumb"><a href="/">Início</a> &nbsp;/&nbsp; Score</div>
+  <h1 class="fnx-page-title">Análise de Crédito</h1>
+  <p class="fnx-page-subtitle">Score, Pefin/Refin, Protestos, CCF e Alertas</p>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="fnx-form-card">
+      <div class="fnx-form-header">
+        <i class="bi bi-graph-up" style="color:#999;"></i>
+        <span class="fnx-form-header-title">Consultar Score</span>
+        <span class="fnx-form-header-badge">CPF ou CNPJ</span>
+      </div>
+      <div class="fnx-form-body">
+        <form method="post">
+          <div class="mb-4">
+            <label class="fnx-label">CPF ou CNPJ</label>
+            <input type="text" name="documento" class="fnx-input form-control"
+                   placeholder="CPF ou CNPJ (só números)" value="{{ documento or '' }}" required />
+            <div style="font-size:0.65rem;letter-spacing:1px;color:#555;margin-top:0.4rem;">
+              Aceita CPF (11 dígitos) ou CNPJ (14 dígitos)
+            </div>
+          </div>
+          <button type="submit" class="btn-fnx-outline">Executar Consulta</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Legenda de Score -->
+    <div class="fnx-form-card mt-3">
+      <div class="fnx-form-header">
+        <span class="fnx-form-header-title">Faixas de Score</span>
+      </div>
+      <div class="fnx-form-body p-0">
+        <div class="fnx-list-item d-flex align-items-center gap-3">
+          <span style="width:8px;height:8px;border-radius:50%;background:#22c55e;flex-shrink:0;"></span>
+          <span style="font-size:0.75rem;color:#888;">800–1000 &nbsp;·&nbsp; Excelente</span>
+        </div>
+        <div class="fnx-list-item d-flex align-items-center gap-3">
+          <span style="width:8px;height:8px;border-radius:50%;background:#86efac;flex-shrink:0;"></span>
+          <span style="font-size:0.75rem;color:#888;">600–799 &nbsp;·&nbsp; Bom</span>
+        </div>
+        <div class="fnx-list-item d-flex align-items-center gap-3">
+          <span style="width:8px;height:8px;border-radius:50%;background:#facc15;flex-shrink:0;"></span>
+          <span style="font-size:0.75rem;color:#888;">400–599 &nbsp;·&nbsp; Médio</span>
+        </div>
+        <div class="fnx-list-item d-flex align-items-center gap-3">
+          <span style="width:8px;height:8px;border-radius:50%;background:#f97316;flex-shrink:0;"></span>
+          <span style="font-size:0.75rem;color:#888;">200–399 &nbsp;·&nbsp; Baixo</span>
+        </div>
+        <div class="fnx-list-item d-flex align-items-center gap-3">
+          <span style="width:8px;height:8px;border-radius:50%;background:#ef4444;flex-shrink:0;"></span>
+          <span style="font-size:0.75rem;color:#888;">0–199 &nbsp;·&nbsp; Muito Baixo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+
+    {% if erro %}
+    <div class="fnx-alert"><i class="bi bi-x-circle me-2"></i>{{ erro }}</div>
+    {% endif %}
+
+    {% if resultado %}
+    {% set d = resultado.data %}
+    {% set score_val = d.score.valor if d.score else 0 %}
+
+    <!-- Score Principal -->
+    <div class="fnx-result-card mb-3">
+      <div class="fnx-result-header">
+        <i class="bi bi-graph-up" style="color:#999;"></i>
+        <span class="fnx-result-header-title">Score de Crédito</span>
+        <span class="ms-auto">
+          {% if resultado.situacao == 'sem_debito' %}
+          <span class="fnx-badge fnx-badge-ok">SEM DÉBITO</span>
+          {% else %}
+          <span class="fnx-badge fnx-badge-err">COM DÉBITO</span>
+          {% endif %}
+        </span>
+      </div>
+      <div class="fnx-result-body">
+        <div class="d-flex align-items-center gap-4 p-4" style="border-bottom:1px solid #1a1a1a;">
+          <!-- Score Gauge -->
+          <div class="score-circle
+            {% if score_val >= 800 %}score-excelente
+            {% elif score_val >= 600 %}score-bom
+            {% elif score_val >= 400 %}score-medio
+            {% elif score_val >= 200 %}score-baixo
+            {% else %}score-muito-baixo{% endif %}">
+            <span class="score-number">{{ score_val }}</span>
+            <span class="score-max">/1000</span>
+          </div>
+          <div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:3px;color:#fff;">
+              {{ d.score.faixa if d.score else '—' }}
+              <span style="font-size:1rem;letter-spacing:1px;color:#666;">CLASSE {{ d.score.classe if d.score else '—' }}</span>
+            </div>
+            <div style="font-size:0.8rem;color:#888;margin-top:0.3rem;">{{ d.score.descricao if d.score else '' }}</div>
+            <div style="font-size:0.75rem;color:#666;margin-top:0.5rem;letter-spacing:1px;">
+              Prob. Inadimplência: <strong style="color:#fff;">{{ d.prob_inadimplencia or d.score.probabilidade if d.score else '—' }}</strong>
+            </div>
+          </div>
+        </div>
+        <table class="fnx-table">
+          <tbody>
+            <tr><th>Nome</th><td>{{ d.nome }}</td></tr>
+            <tr><th>Situação CPF</th>
+                <td>
+                  <span class="fnx-badge {% if d.situacao == 'REGULAR' %}fnx-badge-ok{% else %}fnx-badge-err{% endif %}">
+                    {{ d.situacao }}
+                  </span>
+                </td>
+            </tr>
+            <tr><th>Renda Presumida</th><td>{{ d.renda_presumida or '—' }}</td></tr>
+            <tr><th>Renda Familiar</th><td>{{ d.renda_familiar or '—' }}</td></tr>
+            <tr><th>Concessão de Crédito</th><td>{{ d.concessao_credito or '—' }}</td></tr>
+            <tr><th>Data da Consulta</th><td>{{ d.data_consulta }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pefin / Refin -->
+    {% if d.pendencias_refin and d.pendencias_refin.quantidade > 0 %}
+    <div class="fnx-result-card mb-3">
+      <div class="fnx-result-header">
+        <i class="bi bi-exclamation-triangle" style="color:#f97316;"></i>
+        <span class="fnx-result-header-title">Pefin / Refin</span>
+        <span class="ms-auto">
+          <span class="fnx-badge fnx-badge-err">{{ d.pendencias_refin.quantidade }} ocorrência(s)</span>
+        </span>
+      </div>
+      <div class="fnx-result-body">
+        <div class="fnx-list-item">
+          <div style="display:flex;gap:2rem;font-size:0.8rem;color:#888;">
+            <span>Total: <strong style="color:#fff;">R$ {{ d.pendencias_refin.valor_total }}</strong></span>
+            <span>Último venc.: <strong style="color:#fff;">{{ d.pendencias_refin.ultimo_vencimento }}</strong></span>
+          </div>
+        </div>
+        {% for oc in d.pendencias_refin.ocorrencias %}
+        <div class="fnx-list-item">
+          <div style="font-size:0.9rem;font-weight:600;">{{ oc.credor }}</div>
+          <div style="font-size:0.8rem;color:#888;margin-top:3px;">
+            Valor: <strong style="color:#fff;">R$ {{ oc.valor }}</strong>
+            &nbsp;·&nbsp; Venc.: {{ oc.data }}
+            {% if oc.contrato %} &nbsp;·&nbsp; Contrato: {{ oc.contrato }}{% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <div class="fnx-result-card mb-3">
+      <div class="fnx-result-header">
+        <i class="bi bi-check-circle" style="color:#22c55e;"></i>
+        <span class="fnx-result-header-title">Pefin / Refin</span>
+        <span class="ms-auto"><span class="fnx-badge fnx-badge-ok">NADA CONSTA</span></span>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Protestos -->
+    {% if d.protestos %}
+    <div class="fnx-result-card mb-3">
+      <div class="fnx-result-header">
+        <i class="bi bi-file-earmark-x" style="color:#f97316;"></i>
+        <span class="fnx-result-header-title">Protestos</span>
+        <span class="ms-auto"><span class="fnx-badge fnx-badge-err">{{ d.protestos|length }} registro(s)</span></span>
+      </div>
+      <div class="fnx-result-body">
+        {% for p in d.protestos %}
+        <div class="fnx-list-item">
+          <div style="font-size:0.85rem;">{{ p }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <div class="fnx-result-card mb-3">
+      <div class="fnx-result-header">
+        <i class="bi bi-check-circle" style="color:#22c55e;"></i>
+        <span class="fnx-result-header-title">Protestos</span>
+        <span class="ms-auto"><span class="fnx-badge fnx-badge-ok">NADA CONSTA</span></span>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- CCF / Bacen -->
+    <div class="fnx-result-card mb-3">
+      <div class="fnx-result-header">
+        {% if d.ccf_bacen and d.ccf_bacen.quantidade > 0 %}
+        <i class="bi bi-bank" style="color:#f97316;"></i>
+        {% else %}
+        <i class="bi bi-check-circle" style="color:#22c55e;"></i>
+        {% endif %}
+        <span class="fnx-result-header-title">CCF / Bacen</span>
+        <span class="ms-auto">
+          {% if d.ccf_bacen and d.ccf_bacen.quantidade > 0 %}
+          <span class="fnx-badge fnx-badge-err">{{ d.ccf_bacen.quantidade }} cheque(s)</span>
+          {% else %}
+          <span class="fnx-badge fnx-badge-ok">NADA CONSTA</span>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+
+    <!-- Ações Cíveis -->
+    {% if d.acoes_civeis %}
+    <div class="fnx-result-card mb-3">
+      <div class="fnx-result-header">
+        <i class="bi bi-hammer" style="color:#f97316;"></i>
+        <span class="fnx-result-header-title">Ações Cíveis</span>
+        <span class="ms-auto"><span class="fnx-badge fnx-badge-err">{{ d.acoes_civeis|length }} registro(s)</span></span>
+      </div>
+      <div class="fnx-result-body">
+        {% for ac in d.acoes_civeis %}
+        <div class="fnx-list-item"><div style="font-size:0.85rem;">{{ ac }}</div></div>
+        {% endfor %}
+      </div>
+    </div>
+    {% else %}
+    <div class="fnx-result-card mb-3">
+      <div class="fnx-result-header">
+        <i class="bi bi-check-circle" style="color:#22c55e;"></i>
+        <span class="fnx-result-header-title">Ações Cíveis</span>
+        <span class="ms-auto"><span class="fnx-badge fnx-badge-ok">NADA CONSTA</span></span>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Alertas -->
+    {% if d.alertas %}
+    <div class="fnx-result-card">
+      <div class="fnx-result-header">
+        <i class="bi bi-bell" style="color:#facc15;"></i>
+        <span class="fnx-result-header-title">Alertas</span>
+        <span class="ms-auto" style="font-size:0.65rem;letter-spacing:1px;color:#555;">
+          {{ d.alertas|length }} alerta(s)
+        </span>
+      </div>
+      <div class="fnx-result-body">
+        {% for alerta in d.alertas %}
+        <div class="fnx-list-item">
+          <div style="font-size:0.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#facc15;">
+            {{ alerta.titulo }}
+          </div>
+          <div style="font-size:0.85rem;margin-top:2px;">{{ alerta.observacao }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% endif %}
+
+    {% if not resultado and not erro %}
+    <div style="border:1px dashed #222;padding:3rem;text-align:center;color:#444;">
+      <i class="bi bi-graph-up" style="font-size:2rem;display:block;margin-bottom:1rem;"></i>
+      <span style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;">Aguardando consulta</span>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

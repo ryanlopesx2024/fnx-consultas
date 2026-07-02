@@ -1,0 +1,496 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --gray-100: #f5f5f5;
+  --gray-400: #999999;
+  --gray-600: #444444;
+  --gray-800: #1a1a1a;
+  --gray-900: #0d0d0d;
+  --border: #222222;
+  --border-light: #333333;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background-color: var(--black);
+  color: var(--white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* ── Navbar ── */
+.fnx-nav {
+  background: var(--black);
+  border-bottom: 1px solid var(--border-light);
+  padding: 0.9rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.fnx-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 4px;
+  color: var(--white) !important;
+  text-decoration: none;
+}
+
+.fnx-brand span {
+  color: var(--white);
+}
+
+.fnx-brand small {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  letter-spacing: 5px;
+  color: var(--gray-400);
+  font-weight: 300;
+  display: block;
+  margin-top: -4px;
+  text-transform: uppercase;
+}
+
+.fnx-nav .nav-link {
+  color: var(--gray-400) !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem !important;
+  transition: color 0.2s;
+}
+
+.fnx-nav .nav-link:hover,
+.fnx-nav .nav-link.active {
+  color: var(--white) !important;
+}
+
+.dropdown-menu {
+  background: var(--gray-900);
+  border: 1px solid var(--border-light);
+  border-radius: 0;
+  padding: 0.5rem 0;
+  min-width: 220px;
+}
+
+.dropdown-item {
+  color: var(--gray-400);
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  transition: all 0.15s;
+}
+
+.dropdown-item:hover {
+  background: var(--border);
+  color: var(--white);
+}
+
+/* ── Hero / Index ── */
+.fnx-hero {
+  padding: 5rem 0 4rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4rem;
+}
+
+.fnx-hero-divider {
+  width: 40px;
+  height: 1px;
+  background: var(--border-light);
+  margin: 1.5rem auto 1.5rem;
+}
+
+.fnx-hero-desc {
+  font-size: 0.7rem;
+  letter-spacing: 4px;
+  color: var(--gray-400);
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+/* ── Module Cards (Index) ── */
+.fnx-module {
+  border: 1px solid var(--border-light);
+  background: var(--black);
+  padding: 2.5rem 2rem;
+  transition: border-color 0.2s, background 0.2s;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+
+.fnx-module::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--white);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+
+.fnx-module:hover::before {
+  transform: scaleX(1);
+}
+
+.fnx-module:hover {
+  background: var(--gray-900);
+  border-color: var(--gray-600);
+}
+
+.fnx-module-icon {
+  font-size: 2rem;
+  color: var(--gray-400);
+  margin-bottom: 1.2rem;
+  display: block;
+}
+
+.fnx-module-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 3px;
+  color: var(--white);
+  margin-bottom: 0.5rem;
+}
+
+.fnx-module-desc {
+  font-size: 0.8rem;
+  color: var(--gray-400);
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Buttons ── */
+.btn-fnx {
+  background: var(--white);
+  color: var(--black);
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 0.75rem 2rem;
+  border-radius: 0;
+  transition: background 0.2s, color 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-fnx:hover {
+  background: var(--gray-100);
+  color: var(--black);
+}
+
+.btn-fnx-outline {
+  background: transparent;
+  color: var(--white);
+  border: 1px solid var(--border-light);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.75rem 2rem;
+  border-radius: 0;
+  transition: all 0.2s;
+  width: 100%;
+  cursor: pointer;
+}
+
+.btn-fnx-outline:hover {
+  background: var(--white);
+  color: var(--black);
+  border-color: var(--white);
+}
+
+/* ── Form Cards ── */
+.fnx-form-card {
+  background: var(--black);
+  border: 1px solid var(--border-light);
+  border-radius: 0;
+  margin-bottom: 2rem;
+}
+
+.fnx-form-header {
+  background: var(--gray-900);
+  border-bottom: 1px solid var(--border-light);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.fnx-form-header-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+  color: var(--white);
+  margin: 0;
+}
+
+.fnx-form-header-badge {
+  font-size: 0.6rem;
+  letter-spacing: 2px;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-left: auto;
+}
+
+.fnx-form-body {
+  padding: 1.8rem 1.5rem;
+}
+
+/* ── Inputs ── */
+.fnx-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.fnx-input {
+  background: var(--gray-900);
+  border: 1px solid var(--border-light);
+  color: var(--white);
+  border-radius: 0;
+  padding: 0.75rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  width: 100%;
+  transition: border-color 0.2s;
+}
+
+.fnx-input:focus {
+  background: var(--gray-800);
+  border-color: var(--white);
+  color: var(--white);
+  outline: none;
+  box-shadow: none;
+}
+
+.fnx-input::placeholder {
+  color: var(--gray-600);
+}
+
+/* ── Result Card ── */
+.fnx-result-card {
+  background: var(--black);
+  border: 1px solid var(--border-light);
+  border-radius: 0;
+  margin-bottom: 1.5rem;
+}
+
+.fnx-result-header {
+  background: var(--gray-900);
+  border-bottom: 1px solid var(--border-light);
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.fnx-result-header-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 3px;
+  color: var(--white);
+  margin: 0;
+}
+
+.fnx-result-body {
+  padding: 0;
+}
+
+/* ── Table ── */
+.fnx-table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+}
+
+.fnx-table tr {
+  border-bottom: 1px solid var(--border);
+}
+
+.fnx-table tr:last-child {
+  border-bottom: none;
+}
+
+.fnx-table th {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  padding: 0.9rem 1.5rem;
+  width: 35%;
+  background: transparent;
+}
+
+.fnx-table td {
+  font-size: 0.9rem;
+  color: var(--white);
+  padding: 0.9rem 1.5rem;
+  font-weight: 400;
+}
+
+/* ── Status Badge ── */
+.fnx-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.3rem 0.7rem;
+}
+
+.fnx-badge-ok {
+  background: transparent;
+  border: 1px solid var(--white);
+  color: var(--white);
+}
+
+.fnx-badge-err {
+  background: transparent;
+  border: 1px solid #ff4444;
+  color: #ff4444;
+}
+
+/* ── Alert ── */
+.fnx-alert {
+  border: 1px solid #ff4444;
+  background: transparent;
+  color: #ff4444;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  border-radius: 0;
+  letter-spacing: 0.5px;
+  margin-bottom: 1.5rem;
+}
+
+/* ── List items (endereços, emails) ── */
+.fnx-list-item {
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 1.5rem;
+  font-size: 0.85rem;
+}
+
+.fnx-list-item:last-child {
+  border-bottom: none;
+}
+
+.fnx-list-item-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray-400);
+  margin-bottom: 0.25rem;
+}
+
+/* ── Page header ── */
+.fnx-page-header {
+  padding: 2.5rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2.5rem;
+}
+
+.fnx-page-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  letter-spacing: 5px;
+  color: var(--white);
+  margin: 0;
+  line-height: 1;
+}
+
+.fnx-page-subtitle {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  font-weight: 400;
+  margin-top: 0.3rem;
+}
+
+/* ── Breadcrumb ── */
+.fnx-breadcrumb {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray-600);
+  margin-bottom: 0.5rem;
+}
+
+.fnx-breadcrumb a {
+  color: var(--gray-400);
+  text-decoration: none;
+}
+
+.fnx-breadcrumb a:hover { color: var(--white); }
+
+/* ── Footer ── */
+.fnx-footer {
+  background: var(--black);
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 0;
+  margin-top: auto;
+}
+
+.fnx-footer-text {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray-600);
+}
+
+/* ── Score Circle ── */
+.score-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid currentColor;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.score-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.score-max {
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  opacity: 0.6;
+}
+
+.score-excelente  { color: #22c55e; }
+.score-bom        { color: #86efac; }
+.score-medio      { color: #facc15; }
+.score-baixo      { color: #f97316; }
+.score-muito-baixo{ color: #ef4444; }
+
+/* Bootstrap overrides */
+.form-control { border-radius: 0; }
+.container { max-width: 1100px; }

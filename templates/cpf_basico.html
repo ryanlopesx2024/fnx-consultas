@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="fnx-page-header">
+  <div class="fnx-breadcrumb"><a href="/">Início</a> &nbsp;/&nbsp; <a href="/cpf/">CPF</a> &nbsp;/&nbsp; Situação Cadastral</div>
+  <h1 class="fnx-page-title">CPF — Situação Cadastral</h1>
+  <p class="fnx-page-subtitle">Consulta na Receita Federal com data de nascimento</p>
+</div>
+
+<div class="row">
+  <div class="col-md-5">
+    <div class="fnx-form-card">
+      <div class="fnx-form-header">
+        <i class="bi bi-fingerprint" style="color:#999;"></i>
+        <span class="fnx-form-header-title">Consultar CPF</span>
+        <span class="fnx-form-header-badge">FNX · Receita Federal</span>
+      </div>
+      <div class="fnx-form-body">
+        <form method="post">
+          <div class="mb-4">
+            <label class="fnx-label">Número do CPF</label>
+            <input type="text" name="cpf" class="fnx-input form-control"
+                   placeholder="000.000.000-00" value="{{ cpf or '' }}" required />
+          </div>
+          <div class="mb-4">
+            <label class="fnx-label">Data de Nascimento</label>
+            <input type="date" name="data_nascimento" class="fnx-input form-control" required />
+          </div>
+          <button type="submit" class="btn-fnx-outline">Executar Consulta</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-7">
+
+    {% if erro %}
+    <div class="fnx-alert"><i class="bi bi-x-circle me-2"></i>{{ erro }}</div>
+    {% endif %}
+
+    {% if resultado %}
+    <div class="fnx-result-card">
+      <div class="fnx-result-header">
+        <i class="bi bi-check" style="color:#fff;"></i>
+        <span class="fnx-result-header-title">Resultado</span>
+        <span class="ms-auto">
+          <span class="fnx-badge {% if resultado.situacao_cadastral == 'REGULAR' %}fnx-badge-ok{% else %}fnx-badge-err{% endif %}">
+            {{ resultado.situacao_cadastral }}
+          </span>
+        </span>
+      </div>
+      <div class="fnx-result-body">
+        <table class="fnx-table">
+          <tbody>
+            <tr><th>Nome</th><td>{{ resultado.nome_da_pf }}</td></tr>
+            <tr><th>CPF</th><td>{{ resultado.numero_de_cpf }}</td></tr>
+            <tr><th>Nascimento</th><td>{{ resultado.data_nascimento }}</td></tr>
+            <tr><th>Situação</th>
+                <td>
+                  <span class="fnx-badge {% if resultado.situacao_cadastral == 'REGULAR' %}fnx-badge-ok{% else %}fnx-badge-err{% endif %}">
+                    {{ resultado.situacao_cadastral }}
+                  </span>
+                </td>
+            </tr>
+            <tr><th>Data Inscrição</th><td>{{ resultado.data_inscricao }}</td></tr>
+            <tr><th>Dígito Verificador</th><td>{{ resultado.digito_verificador }}</td></tr>
+            <tr><th>Comprovante</th><td style="font-family:monospace;font-size:0.8rem;">{{ resultado.comprovante_emitido }}</td></tr>
+            <tr><th>Data Comprovante</th><td>{{ resultado.comprovante_emitido_data }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if not resultado and not erro %}
+    <div style="border:1px dashed #222;padding:3rem;text-align:center;color:#444;">
+      <i class="bi bi-fingerprint" style="font-size:2rem;display:block;margin-bottom:1rem;"></i>
+      <span style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;">Aguardando consulta</span>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

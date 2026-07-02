@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="fnx-page-header">
+  <div class="fnx-breadcrumb"><a href="/">Início</a> &nbsp;/&nbsp; CPF</div>
+  <h1 class="fnx-page-title">CPF</h1>
+  <p class="fnx-page-subtitle">Consulta completa — dados pessoais, situação e endereços</p>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="fnx-form-card">
+      <div class="fnx-form-header">
+        <i class="bi bi-fingerprint" style="color:#999;"></i>
+        <span class="fnx-form-header-title">Consultar CPF</span>
+        <span class="fnx-form-header-badge">Receita Federal</span>
+      </div>
+      <div class="fnx-form-body">
+        <form method="post">
+          <div class="mb-4">
+            <label class="fnx-label">Número do CPF</label>
+            <input type="text" name="cpf" class="fnx-input form-control"
+                   placeholder="000.000.000-00" value="{{ cpf or '' }}" required />
+          </div>
+          <button type="submit" class="btn-fnx-outline">Executar Consulta</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+
+    {% if erro %}
+    <div class="fnx-alert"><i class="bi bi-x-circle me-2"></i>{{ erro }}</div>
+    {% endif %}
+
+    {% if pessoa %}
+
+    <!-- Dados Pessoais -->
+    <div class="fnx-result-card">
+      <div class="fnx-result-header">
+        <i class="bi bi-person" style="color:#999;"></i>
+        <span class="fnx-result-header-title">Dados Pessoais</span>
+        <span class="ms-auto">
+          <span class="fnx-badge {% if pessoa.situacao == 'Regular' or pessoa.situacao == 'REGULAR' %}fnx-badge-ok{% else %}fnx-badge-err{% endif %}">
+            {{ pessoa.situacao or 'N/D' }}
+          </span>
+        </span>
+      </div>
+      <div class="fnx-result-body">
+        <table class="fnx-table">
+          <tbody>
+            <tr><th>Nome</th><td>{{ pessoa.nome }}</td></tr>
+            <tr><th>CPF</th><td>{{ pessoa.cpf }}</td></tr>
+            <tr><th>Nascimento</th><td>{{ pessoa.nascimento or '—' }}</td></tr>
+            <tr><th>Gênero</th><td>{{ 'Masculino' if pessoa.genero == 'M' else 'Feminino' if pessoa.genero == 'F' else pessoa.genero or '—' }}</td></tr>
+            <tr><th>Nome da Mãe</th><td>{{ pessoa.mae or '—' }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Situação Cadastral -->
+    {% if pessoa.situacao %}
+    <div class="fnx-result-card">
+      <div class="fnx-result-header">
+        <i class="bi bi-shield-check" style="color:#999;"></i>
+        <span class="fnx-result-header-title">Situação Cadastral</span>
+      </div>
+      <div class="fnx-result-body">
+        <table class="fnx-table">
+          <tbody>
+            <tr><th>Situação</th>
+                <td>
+                  <span class="fnx-badge {% if pessoa.situacao == 'Regular' %}fnx-badge-ok{% else %}fnx-badge-err{% endif %}">
+                    {{ pessoa.situacao }}
+                  </span>
+                  {% if pessoa.situacaoMotivo %} &nbsp;<span style="font-size:0.8rem;color:#888;">{{ pessoa.situacaoMotivo }}</span>{% endif %}
+                </td>
+            </tr>
+            {% if pessoa.situacaoInscricao %}<tr><th>Inscrição</th><td>{{ pessoa.situacaoInscricao }}</td></tr>{% endif %}
+            {% if pessoa.situacaoDigito %}<tr><th>Dígito</th><td>{{ pessoa.situacaoDigito }}</td></tr>{% endif %}
+            {% if pessoa.situacaoAnoObito %}<tr><th>Ano Óbito</th><td>{{ pessoa.situacaoAnoObito }}</td></tr>{% endif %}
+            {% if pessoa.situacaoComprovante %}<tr><th>Comprovante</th><td style="font-family:monospace;font-size:0.8rem;">{{ pessoa.situacaoComprovante }}</td></tr>{% endif %}
+            {% if pessoa.situacaoComprovanteEmissao %}<tr><th>Emissão</th><td>{{ pessoa.situacaoComprovanteEmissao }}</td></tr>{% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Endereços -->
+    {% if enderecos %}
+    <div class="fnx-result-card">
+      <div class="fnx-result-header">
+        <i class="bi bi-geo-alt" style="color:#999;"></i>
+        <span class="fnx-result-header-title">Endereços</span>
+        <span class="ms-auto" style="font-size:0.65rem;letter-spacing:1px;color:#555;">
+          {{ enderecos|length }} registro(s)
+        </span>
+      </div>
+      <div class="fnx-result-body">
+        {% for end in enderecos %}
+        <div class="fnx-list-item">
+          <div class="fnx-list-item-label">Endereço {{ loop.index }}</div>
+          <div style="font-size:0.9rem;font-weight:500;">
+            {{ end.endereco }}, {{ end.numero }}
+            {% if end.complemento %} — {{ end.complemento }}{% endif %}
+          </div>
+          <div style="font-size:0.8rem;color:#666;margin-top:2px;">
+            {{ end.bairro }} &nbsp;·&nbsp; {{ end.cidade }}/{{ end.uf }} &nbsp;·&nbsp; CEP {{ end.cep }}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% endif %}
+
+    {% if not pessoa and not erro %}
+    <div style="border:1px dashed #222;padding:3rem;text-align:center;color:#444;">
+      <i class="bi bi-fingerprint" style="font-size:2rem;display:block;margin-bottom:1rem;"></i>
+      <span style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;">Aguardando consulta</span>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}
