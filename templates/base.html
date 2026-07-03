@@ -59,6 +59,19 @@
             Score
           </a>
         </li>
+        <!-- Auth -->
+        {% set current_user = request.cookies.get('fnx_session') %}
+        <li class="nav-item ms-2">
+          {% if current_user %}
+          <a href="/logout" class="nav-link" style="color:#555;font-size:0.7rem;letter-spacing:1px;">
+            <i class="bi bi-box-arrow-right"></i> Sair
+          </a>
+          {% else %}
+          <a href="/login" class="btn-fnx" style="font-size:0.65rem;padding:0.5rem 1.2rem;">
+            Entrar
+          </a>
+          {% endif %}
+        </li>
       </ul>
     </div>
   </div>

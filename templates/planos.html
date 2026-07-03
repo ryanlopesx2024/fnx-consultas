@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="fnx-hero" style="padding:3rem 0 2.5rem;">
+  <img src="/static/img/logo.svg" alt="FNX" style="height:48px;width:auto;display:block;margin:0 auto 1.5rem;" />
+  <div class="fnx-hero-divider"></div>
+  <p class="fnx-hero-desc">Escolha seu plano e comece a consultar agora</p>
+</div>
+
+<div class="row justify-content-center g-0 mb-5">
+
+  <!-- Plano Free -->
+  <div class="col-md-4">
+    <div class="fnx-form-card h-100" style="border-right:none;">
+      <div class="fnx-form-header">
+        <span class="fnx-form-header-title">Free</span>
+        <span class="fnx-form-header-badge">Sem acesso</span>
+      </div>
+      <div class="fnx-form-body text-center">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:3px;color:#444;margin:1rem 0;">
+          R$ 0
+        </div>
+        <div style="font-size:0.7rem;letter-spacing:2px;color:#555;text-transform:uppercase;margin-bottom:1.5rem;">por mês</div>
+        <ul style="list-style:none;padding:0;margin:0 0 2rem;font-size:0.8rem;color:#555;text-align:left;">
+          <li class="py-2" style="border-bottom:1px solid #1a1a1a;"><i class="bi bi-x me-2" style="color:#444;"></i>Consulta CPF</li>
+          <li class="py-2" style="border-bottom:1px solid #1a1a1a;"><i class="bi bi-x me-2" style="color:#444;"></i>Consulta CNPJ</li>
+          <li class="py-2" style="border-bottom:1px solid #1a1a1a;"><i class="bi bi-x me-2" style="color:#444;"></i>Consulta CEP</li>
+          <li class="py-2"><i class="bi bi-x me-2" style="color:#444;"></i>Score de Crédito</li>
+        </ul>
+        <span class="btn-fnx" style="opacity:0.3;cursor:not-allowed;pointer-events:none;">Plano Atual</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Plano Mensal -->
+  <div class="col-md-4">
+    <div class="fnx-form-card h-100" style="border-top:2px solid #fff;">
+      <div class="fnx-form-header" style="background:#fff;color:#000;">
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:3px;color:#000;">FNX Mensal</span>
+        <span style="font-size:0.6rem;letter-spacing:2px;font-weight:600;margin-left:auto;color:#000;">RECOMENDADO</span>
+      </div>
+      <div class="fnx-form-body text-center">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:3px;color:#fff;margin:1rem 0;">
+          R$ 97
+        </div>
+        <div style="font-size:0.7rem;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:1.5rem;">por mês · cancele quando quiser</div>
+        <ul style="list-style:none;padding:0;margin:0 0 2rem;font-size:0.8rem;color:#aaa;text-align:left;">
+          <li class="py-2" style="border-bottom:1px solid #1a1a1a;"><i class="bi bi-check me-2" style="color:#fff;"></i>Consulta CPF Completa</li>
+          <li class="py-2" style="border-bottom:1px solid #1a1a1a;"><i class="bi bi-check me-2" style="color:#fff;"></i>Consulta CNPJ + Sócios</li>
+          <li class="py-2" style="border-bottom:1px solid #1a1a1a;"><i class="bi bi-check me-2" style="color:#fff;"></i>Consulta CEP</li>
+          <li class="py-2" style="border-bottom:1px solid #1a1a1a;"><i class="bi bi-check me-2" style="color:#fff;"></i>Score de Crédito</li>
+          <li class="py-2"><i class="bi bi-check me-2" style="color:#fff;"></i>Consultas ilimitadas</li>
+        </ul>
+        <!-- SUBSTITUA O HREF PELO LINK DO CHECKOUT DA PAYT -->
+        <a href="https://pay.payt.com.br/fnx-mensal" target="_blank" class="btn-fnx">
+          Assinar Agora
+        </a>
+        <div style="font-size:0.65rem;color:#444;margin-top:0.8rem;letter-spacing:1px;">
+          Pague com cartão, PIX ou boleto
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% if user %}
+<div class="text-center" style="font-size:0.75rem;color:#444;letter-spacing:1px;">
+  Logado como <strong style="color:#888;">{{ user.email }}</strong> &nbsp;·&nbsp;
+  <a href="/logout" style="color:#666;">Sair</a>
+</div>
+{% endif %}
+
+{% endblock %}
