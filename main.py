@@ -46,4 +46,6 @@ async def auth_middleware(request: Request, call_next):
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     user = get_current_user(request)
+    if not user:
+        return RedirectResponse("/vendas", status_code=302)
     return templates.TemplateResponse("index.html", {"request": request, "user": user})

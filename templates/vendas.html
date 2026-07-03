@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FNX Consultas — Plataforma de Dados</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #000;
+      --white: #fff;
+      --gray-900: #0d0d0d;
+      --gray-800: #1a1a1a;
+      --gray-600: #444;
+      --gray-400: #888;
+      --gray-200: #ccc;
+      --border: #1e1e1e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    .v-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+
+    .v-nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* ── HERO ── */
+    .v-hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 8rem 1.5rem 5rem;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .v-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 40%, rgba(255,255,255,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .v-hero-tag {
+      display: inline-block;
+      border: 1px solid var(--border);
+      font-size: 0.65rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      padding: 0.4rem 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .v-hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 7.5rem);
+      letter-spacing: 6px;
+      line-height: 1;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+
+    .v-hero-title span {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.25);
+    }
+
+    .v-hero-sub {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: var(--gray-400);
+      font-weight: 300;
+      max-width: 560px;
+      margin: 0 auto 3rem;
+      line-height: 1.7;
+    }
+
+    .v-hero-ctas {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .v-hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gray-600);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .v-hero-scroll::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gray-600), transparent);
+    }
+
+    /* ── SEÇÕES ── */
+    .v-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 6rem 1.5rem;
+    }
+
+    .v-section-label {
+      font-size: 0.65rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 1rem;
+    }
+
+    .v-section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      letter-spacing: 4px;
+      line-height: 1;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .v-section-desc {
+      font-size: 0.95rem;
+      color: var(--gray-400);
+      font-weight: 300;
+      max-width: 520px;
+      line-height: 1.8;
+    }
+
+    /* ── STATS BAR ── */
+    .v-stats {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .v-stat {
+      padding: 2.5rem 2rem;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .v-stat:last-child { border-right: none; }
+
+    .v-stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      letter-spacing: 3px;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .v-stat-label {
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray-600);
+      margin-top: 0.4rem;
+    }
+
+    /* ── MÓDULOS ── */
+    .v-modules {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border: 1px solid var(--border);
+      margin-top: 4rem;
+    }
+
+    .v-module {
+      padding: 2.5rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .v-module:nth-child(2n) { border-right: none; }
+    .v-module:nth-child(3), .v-module:nth-child(4) { border-bottom: none; }
+
+    .v-module:hover { background: var(--gray-900); }
+
+    .v-module::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: var(--white);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+
+    .v-module:hover::before { transform: scaleX(1); }
+
+    .v-module-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      color: var(--border);
+      position: absolute;
+      top: 1rem; right: 1.5rem;
+      line-height: 1;
+    }
+
+    .v-module-icon {
+      font-size: 1.8rem;
+      color: var(--gray-400);
+      margin-bottom: 1.2rem;
+    }
+
+    .v-module-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 3px;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .v-module-desc {
+      font-size: 0.82rem;
+      color: var(--gray-400);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    .v-module-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 1.2rem;
+    }
+
+    .v-tag {
+      font-size: 0.6rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      color: var(--gray-400);
+      padding: 0.25rem 0.6rem;
+    }
+
+    /* ── COMO FUNCIONA ── */
+    .v-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--border);
+      margin-top: 4rem;
+    }
+
+    .v-step {
+      padding: 2.5rem;
+      border-right: 1px solid var(--border);
+    }
+
+    .v-step:last-child { border-right: none; }
+
+    .v-step-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5rem;
+      color: var(--border);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .v-step-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .v-step-desc {
+      font-size: 0.82rem;
+      color: var(--gray-400);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ── PREÇO ── */
+    .v-price-card {
+      border: 1px solid var(--white);
+      max-width: 480px;
+      margin: 4rem auto 0;
+    }
+
+    .v-price-header {
+      background: var(--white);
+      color: var(--black);
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .v-price-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 3px;
+    }
+
+    .v-price-badge {
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      font-weight: 700;
+      background: var(--black);
+      color: var(--white);
+      padding: 0.3rem 0.7rem;
+    }
+
+    .v-price-body {
+      padding: 2.5rem 2rem;
+    }
+
+    .v-price-value {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .v-price-currency {
+      font-size: 1.2rem;
+      color: var(--gray-400);
+      margin-top: 0.5rem;
+    }
+
+    .v-price-amount {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5rem;
+      letter-spacing: 2px;
+      line-height: 1;
+    }
+
+    .v-price-period {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .v-price-list {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .v-price-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--gray-200);
+    }
+
+    .v-price-list li:last-child { border-bottom: none; }
+
+    .v-price-list li i {
+      color: var(--white);
+      font-size: 0.75rem;
+    }
+
+    /* ── FAQ ── */
+    .v-faq {
+      margin-top: 4rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .v-faq-item {
+      border-bottom: 1px solid var(--border);
+      padding: 1.8rem 0;
+    }
+
+    .v-faq-q {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .v-faq-a {
+      font-size: 0.85rem;
+      color: var(--gray-400);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    /* ── CTA FINAL ── */
+    .v-final-cta {
+      text-align: center;
+      padding: 8rem 1.5rem;
+      border-top: 1px solid var(--border);
+      position: relative;
+    }
+
+    .v-final-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 50% 60% at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── FOOTER ── */
+    .v-footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+    }
+
+    .v-footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* ── BOTÕES ── */
+    .btn-v-primary {
+      background: var(--white);
+      color: var(--black);
+      border: none;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 1rem 2.5rem;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s;
+    }
+
+    .btn-v-primary:hover {
+      background: #ddd;
+      color: var(--black);
+    }
+
+    .btn-v-outline {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid var(--border);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 1rem 2.5rem;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.2s;
+    }
+
+    .btn-v-outline:hover {
+      border-color: var(--white);
+      color: var(--white);
+    }
+
+    /* ── DIVIDER LINE ── */
+    .v-divider {
+      width: 40px;
+      height: 1px;
+      background: var(--border);
+      margin: 1rem auto;
+    }
+
+    @media (max-width: 768px) {
+      .v-stats { grid-template-columns: repeat(2, 1fr); }
+      .v-stat:nth-child(2) { border-right: none; }
+      .v-stat:nth-child(3), .v-stat:nth-child(4) { border-top: 1px solid var(--border); }
+      .v-modules { grid-template-columns: 1fr; }
+      .v-module { border-right: none !important; }
+      .v-module:last-child { border-bottom: none; }
+      .v-steps { grid-template-columns: 1fr; }
+      .v-step { border-right: none; border-bottom: 1px solid var(--border); }
+      .v-step:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="v-nav">
+  <div class="v-nav-inner">
+    <a href="/vendas" style="text-decoration:none;line-height:0;">
+      <img src="/static/img/logo.svg" alt="FNX" style="height:28px;width:auto;" />
+    </a>
+    <div style="display:flex;align-items:center;gap:1.5rem;">
+      <a href="/login" style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:#555;text-decoration:none;">
+        Entrar
+      </a>
+      <a href="https://checkout.payt.com.br/9f98b5d11a0bf5d210347980d6f4c1e5" target="_blank" class="btn-v-primary" style="padding:0.6rem 1.5rem;">
+        Assinar Agora
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="v-hero">
+  <div style="max-width:800px;margin:0 auto;">
+    <div class="v-hero-tag">Plataforma FNX Corporation</div>
+    <h1 class="v-hero-title">
+      Consulte<br/><span>qualquer</span><br/>dado agora
+    </h1>
+    <p class="v-hero-sub">
+      CPF, CNPJ, CEP e Score de Crédito em segundos. Dados completos,
+      sem asteriscos, direto da fonte. Tudo em um único painel.
+    </p>
+    <div class="v-hero-ctas">
+      <a href="https://checkout.payt.com.br/9f98b5d11a0bf5d210347980d6f4c1e5" target="_blank" class="btn-v-primary">
+        Começar Agora — R$ 97/mês
+      </a>
+      <a href="#modulos" class="btn-v-outline">Ver Módulos</a>
+    </div>
+  </div>
+  <div class="v-hero-scroll">scroll</div>
+</section>
+
+<!-- STATS -->
+<div class="v-stats">
+  <div class="v-stat">
+    <div class="v-stat-num">4</div>
+    <div class="v-stat-label">Módulos de Consulta</div>
+  </div>
+  <div class="v-stat">
+    <div class="v-stat-num">&lt;1s</div>
+    <div class="v-stat-label">Tempo de Resposta</div>
+  </div>
+  <div class="v-stat">
+    <div class="v-stat-num">100%</div>
+    <div class="v-stat-label">Dados sem Asteriscos</div>
+  </div>
+  <div class="v-stat">
+    <div class="v-stat-num">24/7</div>
+    <div class="v-stat-label">Disponibilidade</div>
+  </div>
+</div>
+
+<!-- MÓDULOS -->
+<section class="v-section" id="modulos">
+  <div class="v-section-label">O que você consulta</div>
+  <h2 class="v-section-title">Quatro módulos.<br/>Uma plataforma.</h2>
+  <p class="v-section-desc">
+    Cada módulo retorna dados completos e atualizados, sem limitações
+    ou campos mascarados.
+  </p>
+
+  <div class="v-modules">
+
+    <div class="v-module">
+      <div class="v-module-num">01</div>
+      <div class="v-module-icon"><i class="bi bi-fingerprint"></i></div>
+      <div class="v-module-title">CPF</div>
+      <p class="v-module-desc">
+        Nome completo, data de nascimento, nome da mãe, gênero,
+        situação cadastral na Receita Federal, endereços vinculados
+        e dados cadastrais completos.
+      </p>
+      <div class="v-module-tags">
+        <span class="v-tag">Nome Completo</span>
+        <span class="v-tag">Nascimento</span>
+        <span class="v-tag">Nome da Mãe</span>
+        <span class="v-tag">Situação</span>
+        <span class="v-tag">Endereços</span>
+        <span class="v-tag">Telefones</span>
+        <span class="v-tag">E-mails</span>
+      </div>
+    </div>
+
+    <div class="v-module">
+      <div class="v-module-num">02</div>
+      <div class="v-module-icon"><i class="bi bi-building"></i></div>
+      <div class="v-module-title">CNPJ</div>
+      <p class="v-module-desc">
+        Razão social, nome fantasia, situação cadastral, capital social,
+        endereço da matriz, sócios com qualificação, CNAE principal
+        e secundárias, regime tributário e Simples Nacional.
+      </p>
+      <div class="v-module-tags">
+        <span class="v-tag">Razão Social</span>
+        <span class="v-tag">Sócios</span>
+        <span class="v-tag">CNAE</span>
+        <span class="v-tag">Situação</span>
+        <span class="v-tag">Capital Social</span>
+        <span class="v-tag">Regime Tributário</span>
+      </div>
+    </div>
+
+    <div class="v-module">
+      <div class="v-module-num">03</div>
+      <div class="v-module-icon"><i class="bi bi-graph-up"></i></div>
+      <div class="v-module-title">Score</div>
+      <p class="v-module-desc">
+        Análise de crédito completa: pontuação de 0 a 1000, faixa e
+        classe de risco, probabilidade de inadimplência, pendências
+        Pefin/Refin, protestos, CCF/Bacen e ações cíveis.
+      </p>
+      <div class="v-module-tags">
+        <span class="v-tag">Score 0–1000</span>
+        <span class="v-tag">Pefin/Refin</span>
+        <span class="v-tag">Protestos</span>
+        <span class="v-tag">CCF Bacen</span>
+        <span class="v-tag">Ações Cíveis</span>
+        <span class="v-tag">Alertas</span>
+      </div>
+    </div>
+
+    <div class="v-module">
+      <div class="v-module-num">04</div>
+      <div class="v-module-icon"><i class="bi bi-geo-alt"></i></div>
+      <div class="v-module-title">CEP</div>
+      <p class="v-module-desc">
+        Consulta de endereço completo pelo CEP direto nos Correios.
+        Logradouro, complemento, bairro, cidade, UF e código IBGE
+        em tempo real.
+      </p>
+      <div class="v-module-tags">
+        <span class="v-tag">Logradouro</span>
+        <span class="v-tag">Bairro</span>
+        <span class="v-tag">Cidade/UF</span>
+        <span class="v-tag">IBGE</span>
+        <span class="v-tag">Tempo Real</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section style="border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="v-section">
+    <div class="v-section-label">Como funciona</div>
+    <h2 class="v-section-title">Simples assim.</h2>
+
+    <div class="v-steps">
+      <div class="v-step">
+        <div class="v-step-num">01</div>
+        <div class="v-step-title">Crie sua conta</div>
+        <p class="v-step-desc">
+          Cadastro rápido com e-mail e senha.
+          Nenhum dado adicional necessário para começar.
+        </p>
+      </div>
+      <div class="v-step">
+        <div class="v-step-num">02</div>
+        <div class="v-step-title">Assine o plano</div>
+        <p class="v-step-desc">
+          Pague via cartão, PIX ou boleto. O acesso é liberado
+          automaticamente após a confirmação do pagamento.
+        </p>
+      </div>
+      <div class="v-step">
+        <div class="v-step-num">03</div>
+        <div class="v-step-title">Consulte à vontade</div>
+        <p class="v-step-desc">
+          CPF, CNPJ, CEP e Score sem limite de consultas.
+          Resultados completos em menos de 1 segundo.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREÇO -->
+<section class="v-section" id="preco">
+  <div class="text-center">
+    <div class="v-section-label">Investimento</div>
+    <h2 class="v-section-title" style="margin-bottom:0;">Um plano.<br/>Tudo incluso.</h2>
+    <div class="v-divider"></div>
+    <p class="v-section-desc" style="margin:0 auto;">
+      Sem surpresas, sem limites por consulta, sem taxa de setup.
+    </p>
+  </div>
+
+  <div class="v-price-card">
+    <div class="v-price-header">
+      <span class="v-price-title">FNX Mensal</span>
+      <span class="v-price-badge">Mais Popular</span>
+    </div>
+    <div class="v-price-body">
+      <div class="v-price-value">
+        <span class="v-price-currency">R$</span>
+        <span class="v-price-amount">97</span>
+      </div>
+      <div class="v-price-period">por mês · cancele quando quiser</div>
+      <ul class="v-price-list">
+        <li><i class="bi bi-check"></i> Consulta CPF completa (dados + situação)</li>
+        <li><i class="bi bi-check"></i> Consulta CNPJ + sócios + CNAE</li>
+        <li><i class="bi bi-check"></i> Score de crédito + Pefin/Refin</li>
+        <li><i class="bi bi-check"></i> Consulta de CEP</li>
+        <li><i class="bi bi-check"></i> Consultas ilimitadas</li>
+        <li><i class="bi bi-check"></i> Acesso imediato após pagamento</li>
+        <li><i class="bi bi-check"></i> Sem fidelidade — cancele a qualquer hora</li>
+      </ul>
+      <a href="https://checkout.payt.com.br/9f98b5d11a0bf5d210347980d6f4c1e5"
+         target="_blank"
+         class="btn-v-primary"
+         style="width:100%;text-align:center;display:block;">
+        Assinar Agora
+      </a>
+      <div style="text-align:center;font-size:0.65rem;letter-spacing:1px;color:#444;margin-top:1rem;">
+        Pagamento seguro · Cartão · PIX · Boleto
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="border-top:1px solid var(--border);">
+  <div class="v-section">
+    <div class="v-section-label">Dúvidas</div>
+    <h2 class="v-section-title">Perguntas frequentes.</h2>
+
+    <div class="v-faq">
+      <div class="v-faq-item">
+        <div class="v-faq-q">O acesso é liberado na hora?<i class="bi bi-plus"></i></div>
+        <div class="v-faq-a">Sim. Assim que o pagamento for confirmado pela Payt, seu acesso é liberado automaticamente — sem necessidade de aprovação manual.</div>
+      </div>
+      <div class="v-faq-item">
+        <div class="v-faq-q">Tenho limite de consultas?<i class="bi bi-plus"></i></div>
+        <div class="v-faq-a">Não. O plano mensal dá acesso ilimitado a todos os módulos: CPF, CNPJ, CEP e Score de Crédito.</div>
+      </div>
+      <div class="v-faq-item">
+        <div class="v-faq-q">Posso cancelar a qualquer momento?<i class="bi bi-plus"></i></div>
+        <div class="v-faq-a">Sim. Não há fidelidade ou multa por cancelamento. Ao cancelar, seu acesso é bloqueado no final do período pago.</div>
+      </div>
+      <div class="v-faq-item">
+        <div class="v-faq-q">Os dados retornados são completos?<i class="bi bi-plus"></i></div>
+        <div class="v-faq-a">Sim. Diferente de outras plataformas, a FNX não mascara campos com asteriscos. Você recebe nome completo, nome da mãe, endereços, score e todos os demais dados disponíveis.</div>
+      </div>
+      <div class="v-faq-item">
+        <div class="v-faq-q">Quais formas de pagamento são aceitas?<i class="bi bi-plus"></i></div>
+        <div class="v-faq-a">Cartão de crédito, PIX e boleto bancário — todos processados com segurança pela Payt.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<div class="v-final-cta">
+  <div class="v-section-label" style="margin-bottom:1.5rem;">Comece agora</div>
+  <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,6rem);letter-spacing:5px;line-height:1;margin-bottom:2rem;">
+    Acesse tudo.<br/>Por R$ 97/mês.
+  </h2>
+  <a href="https://checkout.payt.com.br/9f98b5d11a0bf5d210347980d6f4c1e5"
+     target="_blank" class="btn-v-primary"
+     style="font-size:0.8rem;padding:1.2rem 3rem;">
+    Assinar Agora
+  </a>
+  <div style="margin-top:1.5rem;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#333;">
+    Sem fidelidade · Cancele quando quiser
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="v-footer">
+  <div class="v-footer-inner">
+    <img src="/static/img/logo.svg" alt="FNX" style="height:22px;width:auto;opacity:0.5;" />
+    <span style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#333;">
+      &copy; 2025 FNX Corporation
+    </span>
+    <a href="/login" style="font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#333;text-decoration:none;">
+      Já tenho conta
+    </a>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // FAQ toggle
+  document.querySelectorAll('.v-faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const a = q.nextElementSibling;
+      const icon = q.querySelector('i');
+      const open = a.style.display === 'block';
+      document.querySelectorAll('.v-faq-a').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.v-faq-q i').forEach(i => { i.className = 'bi bi-plus'; });
+      if (!open) {
+        a.style.display = 'block';
+        icon.className = 'bi bi-dash';
+      }
+    });
+  });
+
+  // Fechar FAQ por padrão
+  document.querySelectorAll('.v-faq-a').forEach(el => el.style.display = 'none');
+</script>
+</body>
+</html>

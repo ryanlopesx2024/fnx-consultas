@@ -72,3 +72,8 @@ async def logout():
 async def page_planos(request: Request):
     user = get_current_user(request)
     return templates.TemplateResponse("planos.html", {"request": request, "user": user})
+
+
+@router.get("/vendas", response_class=HTMLResponse)
+async def page_vendas(request: Request):
+    return templates.TemplateResponse("vendas.html", {"request": request})
