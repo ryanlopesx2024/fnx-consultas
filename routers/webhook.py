@@ -16,6 +16,8 @@ STATUS_ATIVAR = {
     "subscription_renewed",     # renovação mensal paga
     "subscription_reactivated", # reativada após atraso
     "paid",                     # venda avulsa paga
+    # formato antigo da Payt (fallback)
+    "Finalizada/Aprovada", "finalizada", "aprovada", "Aprovada",
 }
 
 # Payt V1 status → bloquear acesso
@@ -23,6 +25,9 @@ STATUS_BLOQUEAR = {
     "subscription_canceled",    # cancelada (cliente, admin, atraso)
     "subscription_overdue",     # em atraso
     "canceled",                 # pedido cancelado
+    # formato antigo da Payt (fallback)
+    "Cancelada", "cancelada", "Cancelada - Chargeback",
+    "Cancelada - Reembolsada", "Solicitação de Reembolso",
 }
 
 PAYT_KEY = os.getenv("PAYT_INTEGRATION_KEY", "")
@@ -90,13 +95,23 @@ async def webhook_payt(request: Request):
     if payload.get("test") is True:
         return JSONResponse({"ok": True, "msg": "teste ignorado"})
 
-    status = payload.get("status", "")
+    status = payload.get("status", "") or payload.get("evento", "") or payload.get("event", "")
     customer = payload.get("customer", {})
-    email = customer.get("email", "").lower().strip()
-    nome = customer.get("name", "")
+    # suporta formato V1 (customer.email) e formato antigo (raiz)
+    email = (
+        customer.get("email")
+        or payload.get("email")
+        or payload.get("buyer_email", "")
+    ).lower().strip()
+    nome = customer.get("name") or payload.get("name") or payload.get("buyer_name", "")
     fake_email = customer.get("fake_email", False)
-    order_id = payload.get("transaction_id") or payload.get("cart_id", "")
-    valor = payload.get("transaction", {}).get("total_price", 0)
+    order_id = (
+        payload.get("transaction_id")
+        or payload.get("cart_id")
+        or payload.get("order_id")
+        or payload.get("id", "")
+    )
+    valor = payload.get("transaction", {}).get("total_price") or payload.get("value") or 0
 
     if not email or fake_email:
         return JSONResponse({"ok": True, "msg": "sem email valido"})
