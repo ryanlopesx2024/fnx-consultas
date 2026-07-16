@@ -76,4 +76,5 @@ async def page_planos(request: Request):
 
 @router.get("/vendas", response_class=HTMLResponse)
 async def page_vendas(request: Request):
-    return templates.TemplateResponse("vendas.html", {"request": request})
+    user = get_current_user(request)
+    return templates.TemplateResponse("vendas.html", {"request": request, "user": user})

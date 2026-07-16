@@ -531,12 +531,22 @@
       <img src="/static/img/logo.svg" alt="FNX" style="height:28px;width:auto;" />
     </a>
     <div style="display:flex;align-items:center;gap:1.5rem;">
-      <a href="/login" style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:#555;text-decoration:none;">
-        Entrar
-      </a>
-      <a href="https://checkout.payt.com.br/9702b7a3fa1c2dd7e2ab6b04b5d9c9dc" target="_blank" class="btn-v-primary" style="padding:0.6rem 1.5rem;">
-        Assinar Agora
-      </a>
+      {% if user and user.ativo %}
+        <a href="/" class="btn-v-primary" style="padding:0.6rem 1.5rem;">
+          Acessar Plataforma
+        </a>
+      {% elif user %}
+        <a href="/planos" class="btn-v-primary" style="padding:0.6rem 1.5rem;">
+          Assinar Agora
+        </a>
+      {% else %}
+        <a href="/login" style="font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:#555;text-decoration:none;">
+          Entrar
+        </a>
+        <a href="https://checkout.payt.com.br/9702b7a3fa1c2dd7e2ab6b04b5d9c9dc" target="_blank" class="btn-v-primary" style="padding:0.6rem 1.5rem;">
+          Assinar Agora
+        </a>
+      {% endif %}
     </div>
   </div>
 </nav>
@@ -553,10 +563,19 @@
       sem asteriscos, direto da fonte. Tudo em um único painel.
     </p>
     <div class="v-hero-ctas">
-      <a href="https://checkout.payt.com.br/9702b7a3fa1c2dd7e2ab6b04b5d9c9dc" target="_blank" class="btn-v-primary">
-        Começar Agora — R$ 49,90/mês
-      </a>
-      <a href="#modulos" class="btn-v-outline">Ver Módulos</a>
+      {% if user and user.ativo %}
+        <a href="/" class="btn-v-primary">
+          Acessar Plataforma →
+        </a>
+        <span style="display:inline-flex;align-items:center;gap:0.5rem;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:#888;border:1px solid #1e1e1e;padding:1rem 1.5rem;">
+          <i class="bi bi-check-circle-fill" style="color:#fff;"></i> Você já é assinante
+        </span>
+      {% else %}
+        <a href="https://checkout.payt.com.br/9702b7a3fa1c2dd7e2ab6b04b5d9c9dc" target="_blank" class="btn-v-primary">
+          Começar Agora — R$ 49,90/mês
+        </a>
+        <a href="#modulos" class="btn-v-outline">Ver Módulos</a>
+      {% endif %}
     </div>
   </div>
   <div class="v-hero-scroll">scroll</div>
@@ -738,15 +757,26 @@
         <li><i class="bi bi-check"></i> Acesso imediato após pagamento</li>
         <li><i class="bi bi-check"></i> Sem fidelidade — cancele a qualquer hora</li>
       </ul>
-      <a href="https://checkout.payt.com.br/9702b7a3fa1c2dd7e2ab6b04b5d9c9dc"
-         target="_blank"
-         class="btn-v-primary"
-         style="width:100%;text-align:center;display:block;">
-        Assinar Agora
-      </a>
-      <div style="text-align:center;font-size:0.65rem;letter-spacing:1px;color:#444;margin-top:1rem;">
-        Pagamento seguro · Cartão · PIX · Boleto
-      </div>
+      {% if user and user.ativo %}
+        <div style="background:#0d0d0d;border:1px solid #1e1e1e;padding:1.2rem;text-align:center;margin-bottom:1rem;">
+          <i class="bi bi-check-circle-fill" style="font-size:1.5rem;color:#fff;display:block;margin-bottom:0.5rem;"></i>
+          <div style="font-size:0.7rem;letter-spacing:3px;text-transform:uppercase;color:#888;">Plano Ativo</div>
+          <div style="font-size:0.8rem;color:#aaa;margin-top:0.3rem;">Você já é assinante FNX</div>
+        </div>
+        <a href="/" class="btn-v-primary" style="width:100%;text-align:center;display:block;">
+          Acessar Plataforma
+        </a>
+      {% else %}
+        <a href="https://checkout.payt.com.br/9702b7a3fa1c2dd7e2ab6b04b5d9c9dc"
+           target="_blank"
+           class="btn-v-primary"
+           style="width:100%;text-align:center;display:block;">
+          Assinar Agora
+        </a>
+        <div style="text-align:center;font-size:0.65rem;letter-spacing:1px;color:#444;margin-top:1rem;">
+          Pagamento seguro · Cartão · PIX · Boleto
+        </div>
+      {% endif %}
     </div>
   </div>
 </section>
@@ -788,14 +818,23 @@
   <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,8vw,6rem);letter-spacing:5px;line-height:1;margin-bottom:2rem;">
     Acesse tudo.<br/>Por R$ 49,90/mês.
   </h2>
-  <a href="https://checkout.payt.com.br/9702b7a3fa1c2dd7e2ab6b04b5d9c9dc"
-     target="_blank" class="btn-v-primary"
-     style="font-size:0.8rem;padding:1.2rem 3rem;">
-    Assinar Agora
-  </a>
-  <div style="margin-top:1.5rem;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#333;">
-    Sem fidelidade · Cancele quando quiser
-  </div>
+  {% if user and user.ativo %}
+    <a href="/" class="btn-v-primary" style="font-size:0.8rem;padding:1.2rem 3rem;">
+      Acessar Plataforma →
+    </a>
+    <div style="margin-top:1.5rem;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#555;">
+      <i class="bi bi-check-circle-fill"></i> Sua assinatura está ativa
+    </div>
+  {% else %}
+    <a href="https://checkout.payt.com.br/9702b7a3fa1c2dd7e2ab6b04b5d9c9dc"
+       target="_blank" class="btn-v-primary"
+       style="font-size:0.8rem;padding:1.2rem 3rem;">
+      Assinar Agora
+    </a>
+    <div style="margin-top:1.5rem;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:#333;">
+      Sem fidelidade · Cancele quando quiser
+    </div>
+  {% endif %}
 </div>
 
 <!-- FOOTER -->
