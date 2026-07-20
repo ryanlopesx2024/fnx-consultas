@@ -48,10 +48,8 @@
             <tr><th>CPF</th><td>{{ resultado.documento }}</td></tr>
             <tr><th>Gênero</th><td>{{ resultado.genero }}</td></tr>
             <tr><th>Nascimento</th><td>{{ resultado.dataDeNascimento }}</td></tr>
-            <tr><th>Idade</th><td>{{ resultado.anos }} anos</td></tr>
             <tr><th>Nome da Mãe</th><td>{{ resultado.nomeDaMae }}</td></tr>
-            <tr><th>Salário Estimado</th><td>R$ {{ resultado.salarioEstimado }}</td></tr>
-            <tr><th>Última Atualização</th><td>{{ resultado.lastUpdate }}</td></tr>
+            {% if resultado.situacao %}<tr><th>Situação</th><td>{{ resultado.situacao }}</td></tr>{% endif %}
           </tbody>
         </table>
       </div>
