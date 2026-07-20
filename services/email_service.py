@@ -91,7 +91,7 @@ def enviar_credenciais(nome: str, email: str, senha: str) -> bool:
               </tr>
             </table>
 
-            <a href="https://fnx-consultas.onrender.com/login"
+            <a href="https://fnxconsultas.onrender.com/login"
                style="display:inline-block;background:#fff;color:#000;
                       font-size:11px;font-weight:700;letter-spacing:3px;
                       text-transform:uppercase;text-decoration:none;
@@ -154,7 +154,7 @@ def enviar_acesso_reativado(nome: str, email: str) -> bool:
               Sua assinatura do <strong style="color:#fff;">FNX Consultas</strong> foi renovada com sucesso.<br/>
               Seu acesso continua ativo — boas consultas!
             </p>
-            <a href="https://fnx-consultas.onrender.com/login"
+            <a href="https://fnxconsultas.onrender.com/login"
                style="display:inline-block;background:#fff;color:#000;
                       font-size:11px;font-weight:700;letter-spacing:3px;
                       text-transform:uppercase;text-decoration:none;
